@@ -16,20 +16,24 @@ namespace SkillsDevelopmentScotland.Demo.Functions
         static Dictionary<string, string> projects = new Dictionary<string, string>();
 
         [FunctionName("WhoBuilt")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest request,
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest request,
             ILogger log)
         {
+            if (!projects.ContainsKey("ypg"))
+            {
+                projects.Add("ypg", "Young Persons Guarentee");
+            }
+
             log.LogInformation("YELLOW !!!!!");
 
             string project = request.Query["project"];
             string role = request.Query["role"];
 
-            string requestBody = await new StreamReader(request.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            
-            project = project ?? data?.project;
-            role = role ?? data?.role;
+            if (project != null)
+            {
+                project = projects.GetValueOrDefault(project, "N/A");
+            }
 
             return new OkObjectResult($"Project: {project}. Role: {role}.");
         }
