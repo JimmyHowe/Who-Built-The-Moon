@@ -26,15 +26,12 @@ namespace SkillsDevelopmentScotland.Demo.Functions
             string role = request.Query["role"];
 
             string requestBody = await new StreamReader(request.Body).ReadToEndAsync();
-            
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             
             project = project ?? data?.project;
             role = role ?? data?.role;
 
-            string responseMessage = $"Project: {project}. Role: {role}.";
-
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult($"Project: {project}. Role: {role}.");
         }
     }
 }
