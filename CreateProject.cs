@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 namespace SkillsDevelopmentScotland.Demo.Functions
 {
-
     internal class Passed {
         public string level;
         public string name;
@@ -30,13 +29,7 @@ namespace SkillsDevelopmentScotland.Demo.Functions
 
             Passed passed = JsonConvert.DeserializeObject<Passed>(content);
 
-            log.LogInformation(passed.level);
-
-            var newEntity = new SchoolEntity()
-            {
-                PartitionKey = passed.level,
-                RowKey = passed.name,
-            };
+            var newEntity = new SchoolEntity(passed.level, passed.name);
 
             ProjectRepository projectRepository = new ProjectTableRepository();
 
